@@ -1,7 +1,7 @@
-#Fog Festival
+# Fog Festival
 *breathe in humidity*
 
-##Get ready for the new foggy experience 🌫😶‍🌫️
+## Get ready for the new foggy experience 🌫😶‍🌫️
 
 Gabiel Rovesti & Giulio Moretto bring the *new* entratainment/fog experience.
 
