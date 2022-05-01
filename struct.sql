@@ -14,16 +14,17 @@ CREATE TABLE Sponsor(
 	PRIMARY KEY (Partita_iva)
 );
 
-CREATE TABLE Pubblicizza(
+CREATE TABLE Sponsorizzazione(
 	Festival VARCHAR(100),
 	Storico_pagamenti FLOAT,
     FOREIGN KEY(Festival) REFERENCES Festival(Nome)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Giornata(
 	Data_effettiva DATE PRIMARY KEY,
 	Festival VARCHAR(100),
-	FOREIGN KEY(Festival) REFERENCES Festival(Nome),
+	FOREIGN KEY(Festival) REFERENCES Festival(Nome)
 	ON DELETE CASCADE
 );
 
@@ -52,18 +53,18 @@ CREATE TABLE Concerto(
 	Ora_fine TIME,
 	Palcoscenico VARCHAR(50),
 	
-	FOREIGN KEY(Palcoscenico) REFERENCES Palcoscenico(Nome),
-	FOREIGN KEY(Artista) REFERENCES Artista(Nome),
-	FOREIGN KEY(Giornata) REFERENCES Giornata(Data_effettiva),
+	FOREIGN KEY(Palcoscenico) REFERENCES Palcoscenico(Nome)
+	ON DELETE CASCADE,
+	FOREIGN KEY(Artista) REFERENCES Artista(Nome)
+	ON DELETE CASCADE,
+	FOREIGN KEY(Giornata) REFERENCES Giornata(Data_effettiva)
+	ON DELETE CASCADE,
 	PRIMARY KEY(Giornata, Artista)
 );
-
-CREATE TYPE Tipo_camerino AS ENUM ('vip', 'classic');
 
 CREATE TABLE Camerino(
 	ID VARCHAR(5) PRIMARY KEY,
 	Grandezza FLOAT,
-	Tipo Tipo_camerino[]
 );
 
 CREATE TABLE Servizio(
@@ -72,8 +73,10 @@ CREATE TABLE Servizio(
 );
 
 CREATE TABLE Camerino_servizio(
-	Camerino VARCHAR(5) REFERENCES Camerino(ID),
-	Servizio VARCHAR(50) REFERENCES Servizio(Nome),
+	Camerino VARCHAR(5) REFERENCES Camerino(ID)
+	ON DELETE CASCADE,
+	Servizio VARCHAR(50) REFERENCES Servizio(Nome)
+	ON DELETE CASCADE,
 	PRIMARY KEY(Camerino, Servizio)
 );
 
@@ -93,6 +96,7 @@ CREATE TABLE Biglietto(
 	Fisico BOOL,
 	Digitale BOOL,
 	FOREIGN KEY(Festival) REFERENCES Festival(nome)
+	ON DELETE CASCADE
 );
 
 CREATE TYPE Tipo_consegna AS ENUM ('digitale', 'fisica','entrambe');
@@ -109,8 +113,10 @@ CREATE TABLE Acquisto(
 );
 
 CREATE TABLE Acquisto_biglietto(
-	Biglietto VARCHAR(5) REFERENCES Biglietto(ID),
- 	Acquisto VARCHAR(5) REFERENCES Acquisto(ID),
+	Biglietto VARCHAR(5) REFERENCES Biglietto(ID)
+	ON DELETE CASCADE,
+ 	Acquisto VARCHAR(5) REFERENCES Acquisto(ID)
+ 	ON DELETE CASCADE,
 	PRIMARY KEY(Biglietto, Acquisto)
 );
 
