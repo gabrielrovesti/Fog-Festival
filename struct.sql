@@ -1,9 +1,8 @@
 CREATE TABLE Festival(
-	Nome VARCHAR(100) UNIQUE,
+	Nome VARCHAR(100) PRIMARY KEY,
 	Data_inizio DATE,
 	Data_fine DATE,
-	Tema VARCHAR(200),
-	PRIMARY KEY(Nome,Data_inizio)
+	Tema VARCHAR(200)
 );
 
 CREATE TABLE Sponsor(
@@ -17,7 +16,10 @@ CREATE TABLE Sponsor(
 CREATE TABLE Sponsorizzazione(
 	Festival VARCHAR(100),
 	Storico_pagamenti FLOAT,
+	Sponsor VARCHAR(11),
     FOREIGN KEY(Festival) REFERENCES Festival(Nome)
+    ON DELETE CASCADE,
+    FOREIGN KEY(Sponsor) REFERENCES Sponsor(Partita_iva)
     ON DELETE CASCADE
 );
 
@@ -64,8 +66,18 @@ CREATE TABLE Concerto(
 
 CREATE TABLE Camerino(
 	ID VARCHAR(5) PRIMARY KEY,
-	Grandezza FLOAT,
+	Grandezza FLOAT
 );
+
+CREATE TABLE Occupazione(
+    Artista VARCHAR(100),
+    Camerino VARCHAR(5),
+	Giornata DATE,
+    FOREIGN KEY(Artista) REFERENCES Artista(Nome) ON DELETE CASCADE,
+    FOREIGN KEY(Camerino) REFERENCES Camerino(ID) ON DELETE CASCADE,
+	FOREIGN KEY(Giornata) REFERENCES Giornata(data_effettiva) ON DELETE CASCADE
+);
+
 
 CREATE TABLE Servizio(
 	Nome VARCHAR(50) PRIMARY KEY,
@@ -81,7 +93,7 @@ CREATE TABLE Camerino_servizio(
 );
 
 CREATE TABLE Cliente(
-	ID VARCHAR(5) PRIMARY KEY,
+	ID VARCHAR(20) PRIMARY KEY,
 	Nome VARCHAR(50),
 	Cognome VARCHAR(100),
 	Indirizzo_fiscale VARCHAR(100),
@@ -102,10 +114,9 @@ CREATE TABLE Biglietto(
 CREATE TYPE Tipo_consegna AS ENUM ('digitale', 'fisica','entrambe');
 
 CREATE TABLE Acquisto(
-	ID VARCHAR(5) PRIMARY KEY,
+	ID VARCHAR(20) PRIMARY KEY,
 	Data_ora TIMESTAMP,
 	Cliente VARCHAR(5),
-	Importo FLOAT,
 	Indirizzo_consegna VARCHAR(100),
 	Consegna Tipo_consegna[],
 	FOREIGN KEY(Cliente) REFERENCES Cliente(ID)
@@ -113,11 +124,19 @@ CREATE TABLE Acquisto(
 );
 
 CREATE TABLE Acquisto_biglietto(
-	Biglietto VARCHAR(5) REFERENCES Biglietto(ID)
-	ON DELETE CASCADE,
- 	Acquisto VARCHAR(5) REFERENCES Acquisto(ID)
+ 	Acquisto VARCHAR(20) REFERENCES Acquisto(ID)
  	ON DELETE CASCADE,
-	PRIMARY KEY(Biglietto, Acquisto)
+ 	Biglietto VARCHAR(5) REFERENCES Biglietto(ID)
+	ON DELETE CASCADE,
+	PRIMARY KEY(Acquisto, Biglietto)
+);
+
+CREATE TABLE Partecipazione(
+	Giornata DATE REFERENCES Giornata(Data_effettiva)
+	ON DELETE CASCADE,
+ 	Acquisto VARCHAR(20) REFERENCES Acquisto(ID)
+ 	ON DELETE CASCADE,
+	PRIMARY KEY(Giornata, Acquisto)
 );
 
 /* POPOLAZIONE */
