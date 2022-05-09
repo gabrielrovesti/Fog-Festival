@@ -15,7 +15,7 @@ CREATE TABLE Sponsor(
 
 CREATE TABLE Sponsorizzazione(
 	Festival VARCHAR(100),
-	Storico_pagamenti FLOAT,
+	Pagamento FLOAT,
 	Sponsor VARCHAR(11),
     FOREIGN KEY(Festival) REFERENCES Festival(Nome)
     ON DELETE CASCADE,
