@@ -1,0 +1,7 @@
+Scaricare msys64 e buttarlo in una cartella preferita.
+Dopo l'installazione spostarsi nella cartella "msys64" e lanciare:
+msys2_shell.cmd
+Si settano i parametri iniziali; ora meglio chiudere e riaprire questa shell
+e si rilanci lo stesso comando
+
+g++ main.cpp -L dependencies\lib -lpq -o main
