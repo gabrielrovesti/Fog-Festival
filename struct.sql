@@ -5,10 +5,19 @@ CREATE TABLE Festival(
 	Tema VARCHAR(200)
 );
 
+CREATE TABLE Indirizzo(
+    ID VARCHAR(20) PRIMARY KEY,
+    Indirizzo VARCHAR(100),
+    Citta VARCHAR(50),
+    Cap VARCHAR(5),
+    Provincia VARCHAR(50)
+);
+
 CREATE TABLE Sponsor(
     Nome VARCHAR(100) UNIQUE,
     Partita_iva VARCHAR(11),
-	Indirizzo_fiscale VARCHAR(100),
+	Indirizzo_fiscale VARCHAR(20) REFERENCES Indirizzo(ID)
+	ON DELETE CASCADE,
 	Codice_fiscale VARCHAR(13),
 	PRIMARY KEY (Partita_iva)
 );
@@ -96,8 +105,9 @@ CREATE TABLE Cliente(
 	ID VARCHAR(20) PRIMARY KEY,
 	Nome VARCHAR(50),
 	Cognome VARCHAR(100),
-	Indirizzo_fiscale VARCHAR(100),
-	Email VARCHAR(100)
+	Indirizzo_fiscale VARCHAR(20) REFERENCES Indirizzo(ID)
+	ON DELETE CASCADE,
+	Email VARCHAR(100),
 );
 
 CREATE TABLE Biglietto(
@@ -116,8 +126,8 @@ CREATE TYPE Tipo_consegna AS ENUM ('digitale', 'fisica','entrambe');
 CREATE TABLE Acquisto(
 	ID VARCHAR(20) PRIMARY KEY,
 	Data_ora TIMESTAMP,
-	Cliente VARCHAR(5),
-	Indirizzo_consegna VARCHAR(100),
+	Cliente VARCHAR(20),
+	Indirizzo_consegna VARCHAR(20) REFERENCES Indirizzo(ID),
 	Consegna Tipo_consegna[],
 	FOREIGN KEY(Cliente) REFERENCES Cliente(ID)
 	ON DELETE CASCADE
